@@ -32,7 +32,6 @@ public class CommandLineInterface {
     private boolean running;
 
     public CommandLineInterface() {
-        // Настраиваем Scanner для работы с UTF-8
         this.scanner = new Scanner(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         this.authService = new AuthService();
         this.budgetService = new BudgetService(authService);
@@ -56,7 +55,6 @@ public class CommandLineInterface {
             }
         }
 
-        // Сохраняем данные текущего пользователя при выходе из приложения
         if (authService.isAuthenticated()) {
             saveCurrentUserData(true);
         }
@@ -138,7 +136,6 @@ public class CommandLineInterface {
                 handleCalculateByCategories();
                 break;
             case "7":
-                // Сохраняем данные перед выходом из аккаунта
                 saveCurrentUserData(true);
                 authService.logout();
                 System.out.println("\nВы вышли из аккаунта.\n");
@@ -160,18 +157,15 @@ public class CommandLineInterface {
         System.out.print("Введите пароль: ");
         String password = scanner.nextLine().trim();
 
-        // Сначала проверяем, есть ли файл с таким логином и паролем
         String userFile = fileService.findUserFile(login, password);
         
         if (userFile != null) {
-            // Файл найден,авторизуем пользователя и загружаем данные
             if (authService.getUserByLogin(login) == null) {
                 authService.register(login, password);
             }
             
             if (authService.login(login, password)) {
                 System.out.println("\nУспешный вход!");
-                // Загружаем данные из найденного файла
                 if (fileService.loadUserDataFromFile(userFile, login, authService, budgetService)) {
                     System.out.println("Данные пользователя загружены из файла " + userFile);
                 } else {
@@ -182,7 +176,6 @@ public class CommandLineInterface {
                 System.out.println("\nОшибка авторизации.\n");
             }
         } else {
-            // Файл не найден, проверяем авторизацию через AuthService
             if (authService.login(login, password)) {
                 System.out.println("\nУспешный вход!");
                 System.out.println("Файл данных не найден. Создан новый кошелек.\n");
@@ -204,14 +197,11 @@ public class CommandLineInterface {
         if (authService.register(login, password)) {
             System.out.println("\nРегистрация успешна!");
             
-            // Автоматически входим после регистрации
             if (authService.login(login, password)) {
                 System.out.println("Вы автоматически вошли в систему.");
                 
-                // Проверяем, есть ли файл данных для этого пользователя
                 String userFile = fileService.findUserFile(login, password);
                 if (userFile != null) {
-                    // Загружаем данные из найденного файла
                     if (fileService.loadUserDataFromFile(userFile, login, authService, budgetService)) {
                         System.out.println("Данные пользователя загружены из файла " + userFile);
                     } else {
@@ -272,7 +262,6 @@ public class CommandLineInterface {
                 return;
             }
             
-            // Проверяем, не превысит ли сумма расходов сумму доходов
             double currentIncome = statisticsService.getTotalIncome();
             double currentExpense = statisticsService.getTotalExpense();
             double newTotalExpense = currentExpense + amount;
@@ -341,7 +330,6 @@ public class CommandLineInterface {
         if (filename.isEmpty()) {
             filename = "statistics.txt";
         } else {
-            // Добавляем расширение .txt, если оно отсутствует
             if (!filename.toLowerCase().endsWith(".txt")) {
                 filename = filename + ".txt";
             }
@@ -375,7 +363,6 @@ public class CommandLineInterface {
             return;
         }
 
-        // Затем вводим категории
         System.out.print("Введите категории через запятую: ");
         String categoriesStr = scanner.nextLine().trim();
 
@@ -388,7 +375,6 @@ public class CommandLineInterface {
             return;
         }
 
-        // Проверяем существование категорий
         List<String> existingCategories = getExistingCategories(type);
         List<String> nonExistentCategories = new ArrayList<>();
         
@@ -406,7 +392,6 @@ public class CommandLineInterface {
             }
             System.out.println();
             
-            // Удаляем несуществующие категории из списка
             categories.removeAll(nonExistentCategories);
             
             if (categories.isEmpty()) {
@@ -453,14 +438,11 @@ public class CommandLineInterface {
             return false;
         }
         
-        // Проверяем наличие точки
         int dotIndex = amountStr.indexOf('.');
         if (dotIndex == -1) {
-            // Нет точки - целое число, это допустимо
             return true;
         }
         
-        // Проверяем количество знаков после точки
         String decimalPart = amountStr.substring(dotIndex + 1);
         return decimalPart.length() <= 2;
     }
@@ -549,7 +531,6 @@ public class CommandLineInterface {
             double remaining = budgetService.getRemainingBudget(category);
             double spent = budgetService.getSpentAmount(category);
             
-            // Проверка превышения лимита
             if (budgetService.isBudgetExceeded(category)) {
                 if (!hasBudgetWarnings) {
                     if (!hasAlerts) {
@@ -564,7 +545,6 @@ public class CommandLineInterface {
                 System.out.println(String.format("⚠ Превышен лимит бюджета для категории '%s'!",
                     category));
             }
-            // Проверка: осталось 25% или меньше, но не исчерпан
             else if (remaining > 0 && remaining <= limit * 0.25) {
                 if (!hasBudgetAlerts) {
                     if (!hasAlerts) {
@@ -580,7 +560,6 @@ public class CommandLineInterface {
                 System.out.println(String.format("⚠ Внимание: осталось %.2f%% лимита для категории '%s' (остаток: %.2f из %.2f)",
                     percentage, category, remaining, limit));
             }
-            // Проверка: лимит исчерпан (остаток = 0)
             else if (remaining == 0 && spent > 0) {
                 if (!hasBudgetAlerts) {
                     if (!hasAlerts) {

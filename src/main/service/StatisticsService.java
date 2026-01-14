@@ -160,13 +160,11 @@ public class StatisticsService {
             }
         }
 
-        // Проверка превышения расходов над доходами
         if (totalExpense > totalIncome) {
             System.out.println();
             System.out.println("⚠ ВНИМАНИЕ: Расходы превысили доходы!");
         }
 
-        // Проверка превышения бюджета по категориям
         boolean hasBudgetWarnings = false;
         for (Budget budget : budgets.values()) {
             if (budgetService.isBudgetExceeded(budget.getCategory())) {
@@ -214,12 +212,10 @@ public class StatisticsService {
                     df.format(remaining)));
             }
 
-            // Проверка превышения расходов над доходами
             if (totalExpense > totalIncome) {
                 writer.println("\n⚠ ВНИМАНИЕ: Расходы превысили доходы!");
             }
 
-            // Проверка превышения бюджета по категориям
             for (Budget budget : budgets.values()) {
                 if (budgetService.isBudgetExceeded(budget.getCategory())) {
                     writer.println(String.format("⚠ ВНИМАНИЕ: Превышен лимит бюджета для категории '%s'!",

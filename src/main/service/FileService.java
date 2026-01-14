@@ -31,10 +31,8 @@ public class FileService {
         try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
                 new FileOutputStream(filename), StandardCharsets.UTF_8))) {
             
-            // Сохраняем информацию о пользователе
             writer.println("USER:" + login + ":" + password);
             
-            // Сохраняем транзакции
             for (Transaction transaction : wallet.getTransactions()) {
                 writer.println(String.format("TRANSACTION:%s:%s:%s:%s",
                     transaction.getType().name(),
@@ -43,7 +41,6 @@ public class FileService {
                     transaction.getDateTime().format(DATE_FORMATTER)));
             }
 
-            // Сохраняем бюджеты
             for (Budget budget : budgets.values()) {
                 writer.println(String.format("BUDGET:%s:%s",
                     budget.getCategory(),
@@ -64,7 +61,7 @@ public class FileService {
         String filename = getUserFileName(login);
         File file = new File(filename);
         if (!file.exists()) {
-            return false; // Файл не существует, это нормально при первом запуске
+            return false; 
         }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -78,8 +75,6 @@ public class FileService {
                 if (line.trim().isEmpty()) {
                     continue;
                 }
-                
-                // Используем ограниченное разделение, чтобы избежать проблем с двоеточиями в категориях
                 int firstColon = line.indexOf(':');
                 if (firstColon == -1) {
                     continue;
@@ -89,12 +84,9 @@ public class FileService {
 
                 switch (type) {
                     case "USER":
-                        // Информация о пользователе уже есть в AuthService
                         break;
 
                     case "TRANSACTION":
-                        // Формат: TYPE:CATEGORY:AMOUNT:DATETIME
-                        // Разделяем на части, но ограничиваем количество разделений
                         String[] transParts = rest.split(":", 4);
                         if (transParts.length >= 4) {
                             try {
@@ -113,7 +105,6 @@ public class FileService {
                         break;
 
                     case "BUDGET":
-                        // Формат: CATEGORY:LIMIT
                         String[] budgetParts = rest.split(":", 2);
                         if (budgetParts.length >= 2) {
                             try {
@@ -128,16 +119,13 @@ public class FileService {
                 }
             }
 
-            // Восстанавливаем данные пользователя
             User user = authService.getUserByLogin(login);
             if (user != null) {
-                // Восстанавливаем транзакции в кошелек
                 Wallet wallet = new Wallet();
                 wallet.setTransactions(transactions);
                 wallet.recalculateBalance();
                 user.setWallet(wallet);
-                
-                // Восстанавливаем бюджеты
+
                 budgetService.setUserBudgets(login, budgets);
             }
 
@@ -173,7 +161,6 @@ public class FileService {
                     if (line.trim().isEmpty()) {
                         continue;
                     }
-                    // Используем ограниченное разделение для USER
                     int firstColon = line.indexOf(':');
                     if (firstColon != -1 && line.substring(0, firstColon).equals("USER")) {
                         String rest = line.substring(firstColon + 1);
@@ -188,7 +175,6 @@ public class FileService {
                     }
                 }
             } catch (IOException e) {
-                // Пропускаем файлы, которые не удалось прочитать
                 continue;
             }
         }
@@ -217,7 +203,6 @@ public class FileService {
                     continue;
                 }
                 
-                // Используем ограниченное разделение, чтобы избежать проблем с двоеточиями в категориях
                 int firstColon = line.indexOf(':');
                 if (firstColon == -1) {
                     continue;
@@ -227,12 +212,9 @@ public class FileService {
 
                 switch (type) {
                     case "USER":
-                        // Информация о пользователе уже есть в AuthService
                         break;
 
                     case "TRANSACTION":
-                        // Формат: TYPE:CATEGORY:AMOUNT:DATETIME
-                        // Разделяем на части, но ограничиваем количество разделений
                         String[] transParts = rest.split(":", 4);
                         if (transParts.length >= 4) {
                             try {
@@ -251,7 +233,6 @@ public class FileService {
                         break;
 
                     case "BUDGET":
-                        // Формат: CATEGORY:LIMIT
                         String[] budgetParts = rest.split(":", 2);
                         if (budgetParts.length >= 2) {
                             try {
@@ -266,16 +247,13 @@ public class FileService {
                 }
             }
 
-            // Восстанавливаем данные пользователя
             User user = authService.getUserByLogin(login);
             if (user != null) {
-                // Восстанавливаем транзакции в кошелек
                 Wallet wallet = new Wallet();
                 wallet.setTransactions(transactions);
                 wallet.recalculateBalance();
                 user.setWallet(wallet);
                 
-                // Восстанавливаем бюджеты
                 budgetService.setUserBudgets(login, budgets);
             }
 

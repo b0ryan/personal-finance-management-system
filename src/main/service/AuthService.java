@@ -27,7 +27,7 @@ public class AuthService {
             return false;
         }
         if (users.containsKey(login)) {
-            return false; // Пользователь уже существует
+            return false; 
         }
         users.put(login, new User(login, password));
         return true;
