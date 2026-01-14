@@ -13,6 +13,8 @@ Backend-приложение для управления личными фина
 
 ## Структура проекта
 
+### Исходный код (src/main/)
+
 ```
 src/main/
 ├── model/          # Модели данных
@@ -29,6 +31,28 @@ src/main/
 ├── ui/             # Пользовательский интерфейс
 │   └── CommandLineInterface.java
 └── Main.java       # Точка входа
+```
+
+### Скомпилированные файлы (out/)
+
+После компиляции структура сохраняется в папке `out/`:
+
+```
+out/
+├── Main.class
+├── model/          # Скомпилированные модели
+│   ├── User.class
+│   ├── Wallet.class
+│   ├── Transaction.class
+│   └── Budget.class
+├── service/        # Скомпилированные сервисы
+│   ├── AuthService.class
+│   ├── WalletService.class
+│   ├── BudgetService.class
+│   ├── StatisticsService.class
+│   └── FileService.class
+└── ui/             # Скомпилированный интерфейс
+    └── CommandLineInterface.class
 ```
 
 ## Компиляция и запуск

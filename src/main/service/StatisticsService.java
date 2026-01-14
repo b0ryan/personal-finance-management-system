@@ -1,8 +1,13 @@
+package service;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
+import model.User;
+import model.Transaction;
+import model.Budget;
 
 /**
  * Сервис для подсчета и вывода статистики

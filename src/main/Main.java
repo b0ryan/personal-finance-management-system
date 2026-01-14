@@ -1,5 +1,6 @@
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import ui.CommandLineInterface;
 
 /**
  * Главный класс приложения для управления личными финансами

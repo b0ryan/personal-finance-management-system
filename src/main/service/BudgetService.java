@@ -1,5 +1,10 @@
+package service;
+
 import java.util.HashMap;
 import java.util.Map;
+import model.User;
+import model.Transaction;
+import model.Budget;
 
 /**
  * Сервис для управления бюджетами по категориям

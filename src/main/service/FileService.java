@@ -1,8 +1,14 @@
+package service;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import model.User;
+import model.Wallet;
+import model.Transaction;
+import model.Budget;
 
 /**
  * Сервис для сохранения и загрузки данных из файла

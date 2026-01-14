@@ -1,3 +1,5 @@
+package ui;
+
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -7,6 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import service.AuthService;
+import service.WalletService;
+import service.BudgetService;
+import service.StatisticsService;
+import service.FileService;
+import model.User;
+import model.Wallet;
+import model.Transaction;
+import model.Budget;
 
 /**
  * Класс для взаимодействия с пользователем через командную строку

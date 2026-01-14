@@ -1,5 +1,8 @@
+package service;
+
 import java.util.HashMap;
 import java.util.Map;
+import model.User;
 
 /**
  * Сервис для управления авторизацией пользователей

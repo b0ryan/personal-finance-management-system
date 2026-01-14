@@ -1,3 +1,9 @@
+package service;
+
+import model.User;
+import model.Wallet;
+import model.Transaction;
+
 /**
  * Сервис для управления кошельком и операциями
  */
